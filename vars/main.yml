@@ -1,5 +1,5 @@
 ---
-# vars file for role-sample
+# vars file for wares.admin.awx
 role_sample_example_var: "hello world"
 
 role_sample_example_dict:

@@ -1,5 +1,5 @@
 ---
-# tasks file for role-sample
+# tasks file for wares.admin.awx
 - name: Debug
   ansible.builtin.debug:
     msg: "Role sample debug message"
