@@ -2,7 +2,7 @@
 # tasks file for wares.admin.awx
 - name: Debug
   ansible.builtin.debug:
-    msg: "wares.admin.awx v0.01"
+    msg: "wares.admin.awx v0.02"
 
 # - name: Install required packages
 #   ansible.builtin.apt:
