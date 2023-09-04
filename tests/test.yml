@@ -1,5 +1,20 @@
 ---
-- hosts: localhost
-  remote_user: root
-  roles:
-    - role-sample
+- name: Configure
+  hosts: elk_01
+  gather_facts: yes
+  tasks:
+
+    - name: Include role general.utils.update-os
+      include_role:
+        name: "general.utils.update-os"
+
+    - name: Include role general.utils.upgrade-packages
+      include_role:
+        name: "general.utils.upgrade-packages"
+
+    - name: Include role wares.admin.awx
+      include_role:
+        name: "wares.lan.logstash"
+      vars:
+        wares_admin_awx_actions: ["install"]
+        wares_lan_logstash_json_filepath: "filters/other/test.json"

@@ -2,4 +2,27 @@
 # tasks file for wares.admin.awx
 - name: Debug
   ansible.builtin.debug:
-    msg: "Role sample debug message"
+    msg: "wares.admin.awx v0.01"
+
+- name: Install K3s Kubernetes
+  ansible.builtin.shell:
+    cmd: curl -sfL https://get.k3s.io | bash -s - --write-kubeconfig-mode 644
+
+- name: Install K3s Kubernetes
+  ansible.builtin.shell:
+    cmd: kubectl get nodes
+  register: kubectl_res
+
+- debug: var=kubectl_res
+
+- name: Install required packages
+  ansible.builtin.apt:
+    pkg:
+    - git
+    - vim
+    - build-essential
+    - apparmor
+    - apparmor-utils
+    state: latest
+    update_cache: yes
+    cache_valid_time: 3600
