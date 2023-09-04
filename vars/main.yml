@@ -1,0 +1,12 @@
+---
+# vars file for role-sample
+role_sample_example_var: "hello world"
+
+role_sample_example_dict:
+  name: "example-dict"
+  description: "This is an example dictionnary"
+
+role_sample_example_list:
+  - {name: 'item1', rank: 1, description: 'this is item 1'}
+  - {name: 'item2', rank: 2, description: 'this is item 2'}
+  - {name: 'item3', rank: 3, description: 'this is item 3'}

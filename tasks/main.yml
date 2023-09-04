@@ -1,0 +1,5 @@
+---
+# tasks file for role-sample
+- name: Debug
+  ansible.builtin.debug:
+    msg: "Role sample debug message"
