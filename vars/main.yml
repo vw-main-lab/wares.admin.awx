@@ -1,6 +1,6 @@
 ---
 # vars file for wares.admin.awx
-role_sample_example_var: "hello world"
+wares_admin_awx_tempdir: /var/tmp
 
 role_sample_example_dict:
   name: "example-dict"
