@@ -59,5 +59,10 @@
 
 - name: Install manifests
   ansible.builtin.shell:
+    chdir: "{{ wares_admin_awx_tempdir }}"
     cmd: kustomize build . | kubectl apply -f -
 
+- name: Run expect to wait for a successful PXE boot via out-of-band CIMC
+  ansible.builtin.shell: |
+    export NAMESPACE=awx
+    kubectl config set-context --current --namespace=$NAMESPACE 
