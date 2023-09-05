@@ -72,7 +72,7 @@
     chdir: "{{ wares_admin_awx_tempdir }}"
     cmd: npm install npm --global
   register: install_npm_res
-  ignore_error: yes
+  ignore_errors: yes
 
 - name: Npm error resolution
   ansible.builtin.debug:
