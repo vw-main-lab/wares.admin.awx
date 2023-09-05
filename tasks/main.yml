@@ -47,10 +47,17 @@
     update_cache: yes
     pkg: docker-ce
 
-- name: Add Docker key
+- name: Get Docker compose
   ansible.builtin.shell:
     chdir: "{{ wares_admin_awx_tempdir }}"
     cmd: curl -s https://api.github.com/repos/docker/compose/releases/latest | grep browser_download_url | grep docker-compose-Linux-x86_64 | cut -d '"' -f 4 | wget -qi -
+
+- name: Move Docker compose
+  ansible.builtin.shell:
+    chdir: "{{ wares_admin_awx_tempdir }}"
+    cmd: |
+      chmod +x docker-compose-Linux-x86_64
+      mv docker-compose-Linux-x86_64 /usr/local/bin/docker-compose
 
 - name: Get Docker compose version
   ansible.builtin.shell:
