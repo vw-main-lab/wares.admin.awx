@@ -22,6 +22,8 @@
     - software-properties-common
     - gnupg2
     - curl
+    - python3-pip
+    - git
     state: latest
     update_cache: yes
     cache_valid_time: 3600
@@ -59,11 +61,21 @@
       chmod +x docker-compose-Linux-x86_64
       mv docker-compose-linux-x86_64 /usr/local/bin/docker-compose
 
-- name: Get Docker compose version
+- name: Get Docker compose version (debug)
   ansible.builtin.shell:
     cmd: docker-compose version
   register: docker_compose_version
 - debug: var=docker_compose_version.stdout
+
+- name: Install npm
+  ansible.builtin.shell:
+    chdir: "{{ wares_admin_awx_tempdir }}"
+    cmd: npm install npm --global
+
+- name: Install Docker Compose Python module
+  ansible.builtin.pip:
+    name: docker-compose==1.28.5
+
 
 # - name: Display nodes
 #   ansible.builtin.shell:
