@@ -89,6 +89,10 @@
     repo: "deb http://ppa.launchpad.net/ansible/ansible/ubuntu trusty main"
     state: present
 
+- name: Add Key
+  ansible.builtin.shell:
+    cmd: apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 93C4A3FD7BB9C367
+
 - name: Update cache and Install latest Ansible version
   ansible.builtin.apt:
     name: ansible
