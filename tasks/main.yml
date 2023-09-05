@@ -70,7 +70,7 @@
 - name: Install npm
   ansible.builtin.shell:
     chdir: "{{ wares_admin_awx_tempdir }}"
-    cmd: npm install npm --global
+    cmd: npm install npm --global -n
   register: install_npm_res
   ignore_errors: yes
 
