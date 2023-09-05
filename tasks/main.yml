@@ -71,6 +71,17 @@
   ansible.builtin.shell:
     chdir: "{{ wares_admin_awx_tempdir }}"
     cmd: npm install npm --global
+  register: install_npm_res
+  ignore_error: yes
+
+- name: Npm error resolution
+  ansible.builtin.debug:
+    msg: |
+      An error was encountered during npm installation. Maybe you should try following then run installation playbook again :
+      npm cache clean -f
+      npm -g uninstall npm
+  failed_when: install_npm_res is failed
+  when: install_npm_res is failed
 
 - name: Install Docker Compose Python module
   ansible.builtin.pip:
