@@ -1,0 +1,72 @@
+---
+# tasks file for wares.admin.awx
+# https://computingforgeeks.com/how-to-install-ansible-awx-on-debian-buster/?expand_article=1
+- name: Debug
+  ansible.builtin.debug:
+    msg: "wares.admin.awx v0.02"
+
+- name: Install required packages
+  ansible.builtin.apt:
+    pkg:
+    - git
+    - vim
+    - build-essential
+    - apparmor
+    - apparmor-utils
+    - curl
+    - jq
+    state: latest
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Install K3s Kubernetes
+  ansible.builtin.shell:
+    chdir: "{{ wares_admin_awx_tempdir }}"
+    cmd: curl -sfL https://get.k3s.io | bash -s - --write-kubeconfig-mode 644
+
+- name: Display nodes
+  ansible.builtin.shell:
+    cmd: kubectl get nodes
+  register: kubectl_res
+- debug: var=kubectl_res
+
+- name: Install Kustomize
+  ansible.builtin.shell:
+    chdir: "{{ wares_admin_awx_tempdir }}"
+    cmd: curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | bash
+
+- name: Move Kustomize
+  ansible.builtin.shell:
+    chdir: "{{ wares_admin_awx_tempdir }}"
+    cmd: mv kustomize /usr/local/bin
+
+- name: Display Kustomize version
+  ansible.builtin.shell:
+    cmd: kustomize version
+  register: kustomizeversion_res
+- debug: var=kustomizeversion_res
+
+- name: Install Kustomize
+  ansible.builtin.shell:
+    chdir: "{{ wares_admin_awx_tempdir }}"
+    cmd: |
+      curl -s https://api.github.com/repos/ansible/awx-operator/releases/latest | grep tag_name | cut -d '"' -f 4
+  register: RELEASE_TAG
+- debug: var=RELEASE_TAG.stdout
+
+- name: Template kustomization.yaml
+  ansible.builtin.template:
+    src: kustomization.yaml
+    dest: "{{ wares_admin_awx_tempdir }}/kustomization.yaml"
+
+- name: Install manifests
+  ansible.builtin.shell:
+    chdir: "{{ wares_admin_awx_tempdir }}"
+    cmd: kustomize build . | kubectl apply -f -
+
+- name: Run expect to wait for a successful PXE boot via out-of-band CIMC
+  ansible.builtin.shell: |
+    export NAMESPACE=awx
+    kubectl config set-context --current --namespace=$NAMESPACE
+
+# Abandon pour le moment : crashloopback en suivant ce guide
