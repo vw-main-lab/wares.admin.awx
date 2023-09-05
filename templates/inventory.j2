@@ -1,3 +1,2 @@
-localhost ansible_connection=local secret_key={{ wares_admin_awx_secretkey.stdout }}
-#admin_user={{ wares_admin_awx_username }}
-#admin_password={{ wares_admin_awx_securepassword }}
+localhost ansible_connection=local admin_user={{ wares_admin_awx_username }} admin_password={{ wares_admin_awx_securepassword }} secret_key={{ wares_admin_awx_secretkey.stdout }}
+

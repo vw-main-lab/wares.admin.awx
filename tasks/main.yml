@@ -84,23 +84,23 @@
     src: inventory.j2
     dest: "{{ wares_admin_awx_tempdir }}/awx-17.1.0/installer/inventory"
 
-- name: Add key for Ansible repository
-  ansible.builtin.shell:
-    cmd: apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 93C4A3FD7BB9C367
+# - name: Add key for Ansible repository
+#   ansible.builtin.shell:
+#     cmd: apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 93C4A3FD7BB9C367
 
-- name: Add Ansible repository into sources list
-  ansible.builtin.apt_repository:
-    repo: "deb http://ppa.launchpad.net/ansible/ansible/ubuntu trusty main"
-    state: present
+# - name: Add Ansible repository into sources list
+#   ansible.builtin.apt_repository:
+#     repo: "deb http://ppa.launchpad.net/ansible/ansible/ubuntu trusty main"
+#     state: present
 
 
-- name: Update cache and Install latest Ansible version
-  ansible.builtin.apt:
-    name: ansible
-    state: latest
-    update_cache: yes
+# - name: Update cache and Install latest Ansible version
+#   ansible.builtin.apt:
+#     name: ansible
+#     state: latest
+#     update_cache: yes
 
-- name: Run AWX installation playbook
-  ansible.builtin.shell:
-    chdir: "{{ wares_admin_awx_tempdir }}/awx-17.1.0/installer/"
-    cmd: ansible-playbook -i inventory install.yml
+# - name: Run AWX installation playbook
+#   ansible.builtin.shell:
+#     chdir: "{{ wares_admin_awx_tempdir }}/awx-17.1.0/installer/"
+#     cmd: ansible-playbook -i inventory install.yml
