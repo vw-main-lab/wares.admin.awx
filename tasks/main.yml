@@ -10,8 +10,8 @@
   ansible.builtin.apt:
     pkg:
     - ansible
-    - nodejs
-    - npm
+    # - nodejs
+    # - npm
     - python3-pip
     - git
     - pwgen
