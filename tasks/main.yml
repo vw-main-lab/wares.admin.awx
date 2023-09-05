@@ -67,13 +67,16 @@
   register: docker_compose_version
 - debug: var=docker_compose_version.stdout
 
+- name: Get nvm
+  ansible.builtin.shell:
+    chdir: "{{ wares_admin_awx_tempdir }}"
+    cmd: curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh | bash
+
 - name: Install nvm
   ansible.builtin.shell:
     chdir: "{{ wares_admin_awx_tempdir }}"
-    cmd: |
-      curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh | bash
-      source ~/.profile
-      nvm install {{ wares_admin_awx_nvm_version }}
+    cmd: nvm install {{ wares_admin_awx_nvm_version }}
+
 
 # - name: Npm error resolution
 #   ansible.builtin.debug:
