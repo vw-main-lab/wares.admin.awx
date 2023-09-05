@@ -94,14 +94,13 @@
     repo: "deb http://ppa.launchpad.net/ansible/ansible/ubuntu trusty main"
     state: present
 
-
 - name: Update cache and Install latest Ansible version
   ansible.builtin.apt:
     name: ansible
     state: latest
     update_cache: yes
 
-- name: Run AWX installation playbook
-  ansible.builtin.shell:
-    chdir: "{{ wares_admin_awx_tempdir }}/awx-17.1.0/installer/"
-    cmd: ansible-playbook -i inventory install.yml
+# - name: Run AWX installation playbook
+#   ansible.builtin.shell:
+#     chdir: "{{ wares_admin_awx_tempdir }}/awx-17.1.0/installer/"
+#     cmd: ansible-playbook -i inventory install.yml
