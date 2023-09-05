@@ -9,9 +9,7 @@
 - name: Install required packages
   ansible.builtin.apt:
     pkg:
-    # - docker-ce
     - ansible
-    # - docker-compose
     - nodejs
     - npm
     - python3-pip
@@ -43,6 +41,15 @@
   ansible.builtin.apt_repository:
     repo: "deb https://download.docker.com/linux/debian {{ RELEASE_NAME.stdout }} stable"
     state: present
+
+- name: Update apt cache and install Docker
+  ansible.builtin.apt:
+    update_cache: yes
+    pkg:
+    - docker-ce
+    - docker-compose
+
+
 
 # - name: Display nodes
 #   ansible.builtin.shell:
