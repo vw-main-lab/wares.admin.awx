@@ -6,71 +6,72 @@
   ansible.builtin.debug:
     msg: "wares.admin.awx v0.03"
 
-# - name: Install required packages
-#   ansible.builtin.apt:
-#     pkg:
-#     - nodejs
-#     - npm
-#     - python3-pip
-#     - git
-#     - pwgen
-#     - wget
-#     - unzip
-#     - apt-transport-https
-#     - ca-certificates
-#     - software-properties-common
-#     - gnupg2
-#     - curl
-#     - python3-pip
-#     - git
-#     state: latest
-#     update_cache: yes
-#     cache_valid_time: 3600
+- name: Install required packages
+  ansible.builtin.apt:
+    pkg:
+    - nodejs
+    - npm
+    - python3-pip
+    - git
+    - pwgen
+    - wget
+    - unzip
+    - apt-transport-https
+    - ca-certificates
+    - software-properties-common
+    - gnupg2
+    - curl
+    - python3-pip
+    - git
+    state: latest
+    update_cache: yes
+    cache_valid_time: 3600
 
-# - name: Add Docker key
-#   ansible.builtin.shell:
-#     chdir: "{{ wares_admin_awx_tempdir }}"
-#     cmd: curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -
+- name: Add Docker key
+  ansible.builtin.shell:
+    chdir: "{{ wares_admin_awx_tempdir }}"
+    cmd: curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -
 
-# - name: Get release name
-#   ansible.builtin.shell:
-#     cmd: lsb_release -cs
-#   register: RELEASE_NAME
-# - debug: var=RELEASE_NAME.stdout
+- name: Get release name
+  ansible.builtin.shell:
+    cmd: lsb_release -cs
+  register: RELEASE_NAME
+- debug: var=RELEASE_NAME.stdout
 
-# - name: Add Docker repository into sources list
-#   ansible.builtin.apt_repository:
-#     repo: "deb https://download.docker.com/linux/debian {{ RELEASE_NAME.stdout }} stable"
-#     state: present
+- name: Add Docker repository into sources list
+  ansible.builtin.apt_repository:
+    repo: "deb https://download.docker.com/linux/debian {{ RELEASE_NAME.stdout }} stable"
+    state: present
 
-# - name: Update apt cache and install Docker ce
-#   ansible.builtin.apt:
-#     update_cache: yes
-#     pkg: docker-ce
+- name: Update apt cache and install Docker ce
+  ansible.builtin.apt:
+    update_cache: yes
+    pkg: docker-ce
 
-# - name: Get Docker compose
-#   ansible.builtin.shell:
-#     chdir: "{{ wares_admin_awx_tempdir }}"
-#     cmd: curl -s https://api.github.com/repos/docker/compose/releases/latest | grep browser_download_url | grep docker-compose-linux-x86_64 | cut -d '"' -f 4 | wget -qi -
+- name: Get Docker compose
+  ansible.builtin.shell:
+    chdir: "{{ wares_admin_awx_tempdir }}"
+    cmd: |
+      curl -s https://api.github.com/repos/docker/compose/releases/latest | grep browser_download_url | grep docker-compose-linux-{{ wares_admin_awx_cpuarch }} | cut -d '"' -f 4 | wget -qi -
 
-# - name: Move Docker compose
-#   ansible.builtin.shell:
-#     chdir: "{{ wares_admin_awx_tempdir }}"
-#     cmd: |
-#       chmod +x docker-compose-Linux-x86_64
-#       mv docker-compose-linux-x86_64 /usr/local/bin/docker-compose
+- name: Move Docker compose
+  ansible.builtin.shell:
+    chdir: "{{ wares_admin_awx_tempdir }}"
+    cmd: |
+      chmod +x docker-compose-linux-{{ wares_admin_awx_cpuarch }}
+      mv docker-compose-linux-{{ wares_admin_awx_cpuarch }} /usr/local/bin/docker-compose
 
-# - name: Get Docker compose version (debug)
-#   ansible.builtin.shell:
-#     cmd: docker-compose version
-#   register: docker_compose_version
-# - debug: var=docker_compose_version.stdout
+- name: Get Docker compose version (debug)
+  ansible.builtin.shell:
+    cmd: docker-compose version
+  register: docker_compose_version
+- debug: var=docker_compose_version.stdout
 
-# - name: Download Awx source
-#   ansible.builtin.unarchive:
-#     src: "{{ wares_admin_awx_source_url }}"
-#     dest: "{{ wares_admin_awx_tempdir }}"
-#     remote_src: yes
+- name: Download Awx source
+  ansible.builtin.unarchive:
+    src: "{{ wares_admin_awx_source_url }}"
+    dest: "{{ wares_admin_awx_tempdir }}"
+    remote_src: yes
 
 - name: Generate key
   ansible.builtin.shell:
@@ -84,23 +85,23 @@
     src: inventory.j2
     dest: "{{ wares_admin_awx_tempdir }}/awx-17.1.0/installer/inventory"
 
-# - name: Add key for Ansible repository
-#   ansible.builtin.shell:
-#     cmd: apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 93C4A3FD7BB9C367
+- name: Add key for Ansible repository
+  ansible.builtin.shell:
+    cmd: apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 93C4A3FD7BB9C367
 
-# - name: Add Ansible repository into sources list
-#   ansible.builtin.apt_repository:
-#     repo: "deb http://ppa.launchpad.net/ansible/ansible/ubuntu trusty main"
-#     state: present
+- name: Add Ansible repository into sources list
+  ansible.builtin.apt_repository:
+    repo: "deb http://ppa.launchpad.net/ansible/ansible/ubuntu trusty main"
+    state: present
 
 
-# - name: Update cache and Install latest Ansible version
-#   ansible.builtin.apt:
-#     name: ansible
-#     state: latest
-#     update_cache: yes
+- name: Update cache and Install latest Ansible version
+  ansible.builtin.apt:
+    name: ansible
+    state: latest
+    update_cache: yes
 
-# - name: Run AWX installation playbook
-#   ansible.builtin.shell:
-#     chdir: "{{ wares_admin_awx_tempdir }}/awx-17.1.0/installer/"
-#     cmd: ansible-playbook -i inventory install.yml
+- name: Run AWX installation playbook
+  ansible.builtin.shell:
+    chdir: "{{ wares_admin_awx_tempdir }}/awx-17.1.0/installer/"
+    cmd: ansible-playbook -i inventory install.yml

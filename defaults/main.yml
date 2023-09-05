@@ -2,3 +2,4 @@
 # defaults file for wares.admin.awx
 wares_admin_awx_username: "admin"
 wares_admin_awx_securepassword: "deRzpFgg33542f"
+wares_admin_awx_cpuarch: "x86_64"
