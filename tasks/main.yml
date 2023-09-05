@@ -72,12 +72,12 @@
 #     dest: "{{ wares_admin_awx_tempdir }}"
 #     remote_src: yes
 
-# - name: Generate key
-#   ansible.builtin.shell:
-#     chdir: "{{ wares_admin_awx_tempdir }}/awx-17.1.0/installer/"
-#     cmd: pwgen -N 1 -s 30
-#   register: wares_admin_awx_secretkey
-# - debug: var=wares_admin_awx_secretkey.stdout
+- name: Generate key
+  ansible.builtin.shell:
+    chdir: "{{ wares_admin_awx_tempdir }}/awx-17.1.0/installer/"
+    cmd: pwgen -N 1 -s 30
+  register: wares_admin_awx_secretkey
+- debug: var=wares_admin_awx_secretkey.stdout
 
 - name: Template inventory
   ansible.builtin.template:
