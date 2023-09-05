@@ -26,7 +26,7 @@
     update_cache: yes
     cache_valid_time: 3600
 
-- name: Install K3s Kubernetes
+- name: Add Docker key
   ansible.builtin.shell:
     chdir: "{{ wares_admin_awx_tempdir }}"
     cmd: curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -
@@ -42,14 +42,21 @@
     repo: "deb https://download.docker.com/linux/debian {{ RELEASE_NAME.stdout }} stable"
     state: present
 
-- name: Update apt cache and install Docker
+- name: Update apt cache and install Docker ce
   ansible.builtin.apt:
     update_cache: yes
-    pkg:
-    - docker-ce
-    - docker-compose
+    pkg: docker-ce
 
+- name: Add Docker key
+  ansible.builtin.shell:
+    chdir: "{{ wares_admin_awx_tempdir }}"
+    cmd: curl -s https://api.github.com/repos/docker/compose/releases/latest | grep browser_download_url | grep docker-compose-Linux-x86_64 | cut -d '"' -f 4 | wget -qi -
 
+- name: Get Docker compose version
+  ansible.builtin.shell:
+    cmd: docker-compose version
+  register: docker_compose_version
+- debug: var=docker_compose_version.stdout
 
 # - name: Display nodes
 #   ansible.builtin.shell:
