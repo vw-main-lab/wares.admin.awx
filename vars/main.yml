@@ -1,12 +1,4 @@
 ---
 # vars file for wares.admin.awx
 wares_admin_awx_tempdir: /var/tmp
-
-role_sample_example_dict:
-  name: "example-dict"
-  description: "This is an example dictionnary"
-
-role_sample_example_list:
-  - {name: 'item1', rank: 1, description: 'this is item 1'}
-  - {name: 'item2', rank: 2, description: 'this is item 2'}
-  - {name: 'item3', rank: 3, description: 'this is item 3'}
+wares_admin_awx_nvm_version: 12.6.0

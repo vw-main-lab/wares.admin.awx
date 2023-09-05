@@ -10,7 +10,7 @@
   ansible.builtin.apt:
     pkg:
     - ansible
-    # - nodejs
+    - nodejs
     # - npm
     - python3-pip
     - git
@@ -67,26 +67,26 @@
   register: docker_compose_version
 - debug: var=docker_compose_version.stdout
 
-- name: Install npm
+- name: Install nvm
   ansible.builtin.shell:
     chdir: "{{ wares_admin_awx_tempdir }}"
-    # cmd: npm install npm --global -n
-    cmd: npm install -g npm@latest
-  register: install_npm_res
-  ignore_errors: yes
+    cmd: |
+      curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh | bash
+      source ~/.profile
+      nvm install {{ wares_admin_awx_nvm_version }}
 
-- name: Npm error resolution
-  ansible.builtin.debug:
-    msg: |
-      An error was encountered during npm installation. Maybe you should try following then run installation playbook again :
-      npm cache clean -f
-      npm -g uninstall npm
-  failed_when: install_npm_res is failed
-  when: install_npm_res is failed
+# - name: Npm error resolution
+#   ansible.builtin.debug:
+#     msg: |
+#       An error was encountered during npm installation. Maybe you should try following then run installation playbook again :
+#       npm cache clean -f
+#       npm -g uninstall npm
+#   failed_when: install_npm_res is failed
+#   when: install_npm_res is failed
 
-- name: Install Docker Compose Python module
-  ansible.builtin.pip:
-    name: docker-compose==1.28.5
+# - name: Install Docker Compose Python module
+#   ansible.builtin.pip:
+#     name: docker-compose==1.28.5
 
 
 # - name: Display nodes
